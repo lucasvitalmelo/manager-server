@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id    Int      @id @default(autoincrement())
+  name  String
+  age   DateTime
+  email String?
+  phone String
+  order Order[]
+}
+
+model Order {
+  id            Int       @id @default(autoincrement())
+  tattooType    String
+  bodyLocation  String
+  width         Int
+  height        Int
+  price         Int
+  status        Status
+  tags          String[]  @default([])
+  description   String?
+  payments      Payment[]
+  scheduledDate DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  customer      Customer  @relation(fields: [customerId], references: [id])
+  customerId    Int
+}
+
+model Tags {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
+
+model TattooType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
+
+model Payment {
+  id          Int      @id @default(autoincrement())
+  orderId     Int
+  amount      Int
+  description String?
+  createdAt   DateTime @default(now())
+  order       Order    @relation(fields: [orderId], references: [id])
+}
+
+enum Status {
+  PENDING
+  PROGRESS
+  CONCLUDED
+}
