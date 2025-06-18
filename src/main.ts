@@ -8,9 +8,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const corsOptions: CorsOptions = {
-    origin: 'http://localhost:5173',
+    origin: process.env.APP_WEB!,
     credentials: true
-
   }
 
   app.enableCors(corsOptions)
