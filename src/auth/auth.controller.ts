@@ -38,9 +38,10 @@ export class AuthController {
 
     res.cookie('access_token', token.access_token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000,
+      domain: new URL(process.env.APP_WEB!).hostname,
     });
 
     return res.redirect(process.env.APP_WEB!);
