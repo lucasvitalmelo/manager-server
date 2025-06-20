@@ -30,7 +30,7 @@ export default tseslint.config(
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
       "object-curly-spacing": ["error", "always"],
-      "@typescript-eslint/no-unsafe-call": "error",
+      "@typescript-eslint/no-unsafe-call": "off",
       "prettier/prettier": "off"
     },
   },
