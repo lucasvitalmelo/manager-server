@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -6,15 +6,23 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class PaymentService {
   constructor(private prismaService: PrismaService) { }
 
-  create(createPaymentDto: CreatePaymentDto) {
+  async create(createPaymentDto: CreatePaymentDto) {
     return this.prismaService.payment.create({
-      data: {
-        ...createPaymentDto
-      }
+      data: { ...createPaymentDto },
     });
   }
 
-  remove(id: number) {
-    return this.prismaService.payment.delete({ where: { id } });
+  async remove(id: number) {
+    const payment = await this.prismaService.payment.findUnique({
+      where: { id },
+    });
+
+    if (!payment) {
+      throw new NotFoundException('Payment not found');
+    }
+
+    await this.prismaService.payment.delete({ where: { id } });
+
+    return { message: 'Payment deleted successfully' };
   }
 }
