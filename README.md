@@ -1,98 +1,129 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Manager API
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Backend API desenvolvida com **NestJS**, **Prisma** e **PostgreSQL** para gerenciamento de estúdio de tatuagem.
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠️ Tecnologias
 
-## Project setup
+- [NestJS](https://nestjs.com/)
+- [Prisma ORM](https://www.prisma.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Swagger](https://swagger.io/) — Documentação da API
+- Autenticação via **Google OAuth2 + JWT**
+- Deploy ready **Railway**
 
-```bash
-$ npm install
-```
+---
 
-## Compile and run the project
+## 🚩 Funcionalidades
+
+- Autenticação com Google OAuth2 e JWT (cookies httpOnly)
+- Gestão de Clientes (Customers)
+- Gestão de Pedidos (Orders)
+- Gestão de Pagamentos (Payments)
+- Gerenciamento de Tags
+- Gerenciamento de Tipos de Tatuagem (Tattoo Types)
+
+---
+
+## 📦 Instalação
 
 ```bash
-# development
-$ npm run start
+# Clone o repositório
+git clone https://github.com/lucasvitalmelo/manager-server
+cd manager-server
 
-# watch mode
-$ npm run start:dev
+# Instale as dependências
+npm install
 
-# production mode
-$ npm run start:prod
+# Copie e configure as variáveis de ambiente
+cp .env.example .env
 ```
 
-## Run tests
+---
+
+## 🗒️ Variáveis de ambiente
+
+```env
+APP_WEB='https://manager-web.app/'
+DATABASE_URL=postgresql://user:password@host:port/dbname
+GOOGLE_CLIENT_ID=seu_google_client_id
+GOOGLE_CLIENT_SECRET=seu_google_client_secret
+SECRETKEY=chave_secreta_jwt
+
+# se for fechar para apenas um email ter acesso
+AUTH_MAIL='john.doe@gmail.com'
+
+```
+
+---
+
+## 🔨 Rodando o projeto
 
 ```bash
-# unit tests
-$ npm run test
+# Gere o client Prisma
+npx prisma generate
 
-# e2e tests
-$ npm run test:e2e
+# Rode as migrations
+npx prisma migrate dev
 
-# test coverage
-$ npm run test:cov
+# Rode o projeto
+npm run start:dev
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🔥 Documentação da API
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Acesse:
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```
+http://localhost:3000/docs-swagger
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Gerada automaticamente via Swagger.
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## 🗂️ Endpoints Principais
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+| Entidade    | Método | Endpoint             | Descrição                       |
+|--------------|--------|----------------------|----------------------------------|
+| Auth         | GET    | /auth/google         | Login via Google OAuth           |
+| Auth         | GET    | /auth/google/callback| Callback OAuth                   |
+| Customer     | GET    | /customer            | Listar clientes                  |
+| Customer     | POST   | /customer            | Criar cliente                    |
+| Customer     | PATCH  | /customer/:id        | Atualizar cliente                |
+| Customer     | DELETE | /customer/:id        | Deletar cliente                  |
+| Order        | GET    | /order               | Listar pedidos                   |
+| Order        | POST   | /order               | Criar pedido                     |
+| Order        | PATCH  | /order/:id           | Atualizar pedido                 |
+| Order        | DELETE | /order/:id           | Deletar pedido                   |
+| Payment      | POST   | /payment             | Criar pagamento                  |
+| Payment      | DELETE | /payment/:id         | Deletar pagamento                |
+| Tags         | GET    | /tags                | Listar tags                      |
+| Tags         | POST   | /tags                | Criar tag                        |
+| Tags         | DELETE | /tags/:id            | Deletar tag                      |
+| Tattoo Type  | GET    | /tattoo-type         | Listar tipos de tatuagem         |
+| Tattoo Type  | POST   | /tattoo-type         | Criar tipo de tatuagem           |
+| Tattoo Type  | DELETE | /tattoo-type/:id     | Deletar tipo de tatuagem         |
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 🔐 Autenticação
 
-## Stay in touch
+- A API utiliza autenticação via **JWT armazenado em cookies httpOnly**.
+- Todos os endpoints, exceto `/auth/google` e `/auth/google/callback`, são protegidos.
+- A documentação Swagger permite testes autenticados usando o botão "Authorize" (ícone de cadeado) — necessário cookie `access_token`.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+---
 
-## License
+## 👨‍💻 Autor
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- Desenvolvido por [Lucas Vital de Melo](https://github.com/lucasvitalmelo)
+
+---
+
+## 🏆 Licença
+
+MIT — sinta-se livre para usar e adaptar.
