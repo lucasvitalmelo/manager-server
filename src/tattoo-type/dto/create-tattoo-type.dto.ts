@@ -1,3 +1,9 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export class CreateTattooTypeDto {
-  name: string
+  @ApiProperty({
+    example: 'Blackwork',
+    description: 'Tattoo type name. Should be unique.',
+  })
+  name: string;
 }
