@@ -26,13 +26,13 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const user = req.user as GoogleUser;
-    console.log(
-      'user: ', user.email,
-      'env: ', process.env.AUTH_MAIL
-    )
-    if (user.email !== process.env.AUTH_MAIL) {
-      return res.redirect(process.env.APP_WEB!);
-    }
+
+    //                  Set an email for authentication 
+    // !!!!!!!!!!!  Without this guideline, anyone can log in. !!!!!!!!!!!
+
+    // if (user.email !== process.env.AUTH_MAIL) {
+    //   return res.redirect(process.env.APP_WEB!);
+    // }
 
     const token = this.authService.generateJwt(user);
 
