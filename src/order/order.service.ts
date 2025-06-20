@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -7,13 +7,18 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class OrderService {
   constructor(private prismaService: PrismaService) { }
 
-  create(createOrderDto: CreateOrderDto) {
-    return this.prismaService.order.create({
+  async create(createOrderDto: CreateOrderDto) {
+    const order = await this.prismaService.order.create({
       data: {
         ...createOrderDto,
-        price: createOrderDto.price * 100 // convert to cents
+        price: createOrderDto.price * 100
       }
     });
+
+    return {
+      ...order,
+      price: order.price / 100
+    }
   }
 
   async findAll() {
@@ -60,8 +65,8 @@ export class OrderService {
 
   }
 
-  findOne(id: number) {
-    return this.prismaService.order.findUnique({
+  async findOne(id: number) {
+    const order = await this.prismaService.order.findUnique({
       where: { id },
       include: {
         customer: {
@@ -80,20 +85,43 @@ export class OrderService {
         }
       }
     });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    const paid = order.payments.reduce(
+      (sum, payment) => sum + payment.amount,
+      0,
+    );
+
+    return {
+      ...order,
+      price: order.price / 100,
+      paid: paid / 100,
+    };
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return this.prismaService.order.update({
+  async update(id: number, updateOrderDto: UpdateOrderDto) {
+    const order = await this.prismaService.order.update({
       where: { id },
       data: {
         ...updateOrderDto,
-
-        price: updateOrderDto.price && updateOrderDto.price * 100
+        ...(updateOrderDto.price !== undefined && {
+          price: updateOrderDto.price * 100,
+        }),
       }
     });
+
+    return {
+      ...order,
+      price: order.price / 100,
+    };
   }
 
-  remove(id: number) {
-    return this.prismaService.order.delete({ where: { id } });
+  async remove(id: number) {
+    await this.prismaService.order.delete({ where: { id } });
+    return { message: 'Order deleted successfully' };
   }
 }
+
